@@ -12,7 +12,7 @@ using TTTN.TaskManagement.Data.Entities;
 namespace TTTN.TaskManagement.Data.Migrations
 {
     [DbContext(typeof(TTTNTaskManagementDbcontext))]
-    [Migration("20220302050033_Initial")]
+    [Migration("20220307094714_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TTTN.TaskManagement.Data\TTTN.TaskManagement.Data.csproj" />
+    <ProjectReference Include="..\TTTN.TaskManagement.Models\TTTN.TaskManagement.Models.csproj" />
+  </ItemGroup>
+
 </Project>

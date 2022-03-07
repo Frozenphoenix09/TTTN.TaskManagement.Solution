@@ -21,11 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TTTN.TaskManagement.Data\TTTN.TaskManagement.Data.csproj" />
+    <ProjectReference Include="..\TTTN.TaskManagement.Services\TTTN.TaskManagement.Services.csproj" />
   </ItemGroup>
 
 </Project>

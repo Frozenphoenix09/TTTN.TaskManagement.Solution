@@ -21,6 +21,7 @@ namespace TTTN.TaskManagement.Models.Models.TaskModels
         public Priority Priority { get; set; }
         public string? Note { get; set; }
         public DateTime CreatedBy { get; set; }
-        public string Assignee { get; set; }
+        public string? Assignee { get; set; }
+        public virtual User? AssignedUser { get; set; }
     }
 }

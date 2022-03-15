@@ -1,44 +1,44 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TTTN.TaskManagement.Models.Models.ActionModels;
+using TTTN.TaskManagement.Models.Models.ModuleModels;
 using TTTN.TaskManagement.Services.Services;
 
 namespace TTTN.TaskManagement.WebApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
-    public class ActionController : ControllerBase
+    public class ModuleController : ControllerBase
     {
-        private readonly IActionService _ationServices;
-        public ActionController(IActionService services)
+        private readonly IModuleService _moduleServices;
+        public ModuleController(IModuleService services)
         {
-            _ationServices = services;
+            _moduleServices = services;
         }
         [HttpGet]
         public IActionResult GetAll()
         {
-            var actions = _ationServices.GetAllAction();
+            var actions = _moduleServices.GetAllModule();
             return Ok(actions);
         }
         [HttpPost]
-        public IActionResult Create(ActionViewModel model)
-        {
-            if(ModelState.IsValid)
-            {
-               if(_ationServices.CreateAction(model)) 
-                    return RedirectToAction(nameof(GetAll));
-               else 
-                    return BadRequest();
-            }
-            else    
-                return BadRequest(ModelState);
-        }
-        [HttpPost]
-        public IActionResult Update(ActionViewModel model)
+        public IActionResult Create(ModuleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _ationServices.UpdateAction(model);
+                if (_moduleServices.CreateModule(model))
+                    return RedirectToAction(nameof(GetAll));
+                else
+                    return BadRequest();
+            }
+            else
+                return BadRequest(ModelState);
+        }
+        [HttpPost]
+        public IActionResult Update(ModuleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _moduleServices.UpdateModule(model);
                 return Ok(model);
             }
             else
@@ -49,7 +49,7 @@ namespace TTTN.TaskManagement.WebApi.Controllers
         {
             try
             {
-                if (_ationServices.DeleteAction(id))
+                if (_moduleServices.DeleteModule(id))
                     return RedirectToAction(nameof(GetAll));
                 else
                     return BadRequest();
@@ -61,9 +61,9 @@ namespace TTTN.TaskManagement.WebApi.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Search(string? textSearch , int? id)
+        public IActionResult Search(string? textSearch, int? id)
         {
-            var result = _ationServices.Search(textSearch, id);
+            var result = _moduleServices.Search(textSearch, id);
             if (result != null)
             {
                 return Ok(result);

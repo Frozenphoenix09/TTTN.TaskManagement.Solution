@@ -12,9 +12,9 @@ namespace TTTN.TaskManagement.Models.Models.NotificationDetailModels
         public int NotificationDetailId { get; set; }
         public int NotificationId { get; set; }
         public int SendTo { get; set; }
-        public Notification Notification { get; set; }
-        public User User { get; set; }
-        public string UserName { get; set; }
+        public Notification? Notification { get; set; }
+        public User? User { get; set; }
+        public string? UserName { get; set; }
         public string NotificationTitle { get; set; }
     }
 }

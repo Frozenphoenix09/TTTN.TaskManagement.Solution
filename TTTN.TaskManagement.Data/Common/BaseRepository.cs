@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TTTN.TaskManagement.Data.Entities;
 
 namespace TTTN.TaskManagement.Data.Common
@@ -165,6 +160,7 @@ namespace TTTN.TaskManagement.Data.Common
             query = query.Where(expression);
             return query.FirstOrDefault();
         }
+
         public List<T> FindAll(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
         {
             var query = Dbset.AsQueryable();

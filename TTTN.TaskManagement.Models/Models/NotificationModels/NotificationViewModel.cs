@@ -13,12 +13,12 @@ namespace TTTN.TaskManagement.Models.Models.NotificationModels
         public string Title { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        public NotificationStatus Status { get; set; }
+        public NotificationStatus? Status { get; set; }
         public int CreatedBy { get; set; }
 
         [Required(ErrorMessage = "Nội dung không được để trống !")]
         public string Description { get; set; }
 
-        public ICollection<NotificationDetail> Notifications { get; set; }
+        public ICollection<NotificationDetail>? Notifications { get; set; }
     }
 }

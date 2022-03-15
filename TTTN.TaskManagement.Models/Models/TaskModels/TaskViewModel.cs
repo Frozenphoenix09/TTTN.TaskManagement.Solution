@@ -20,7 +20,7 @@ namespace TTTN.TaskManagement.Models.Models.TaskModels
         public TaskStatus Status { get; set; }
         public Priority Priority { get; set; }
         public string? Note { get; set; }
-        public DateTime CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
         public string? Assignee { get; set; }
         public virtual User? AssignedUser { get; set; }
     }

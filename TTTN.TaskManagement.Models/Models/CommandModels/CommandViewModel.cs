@@ -15,7 +15,7 @@ namespace TTTN.TaskManagement.Models.Models.CommandModels
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public CommandStatus Status { get; set; }
-        public string CreatorName { get; set; }
+        public string? CreatorName { get; set; }
         public User? Creator { get; set; }
     }
 }

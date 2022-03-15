@@ -12,7 +12,7 @@ using TTTN.TaskManagement.Data.Entities;
 namespace TTTN.TaskManagement.Data.Migrations
 {
     [DbContext(typeof(TTTNTaskManagementDbcontext))]
-    [Migration("20220307094714_Initial")]
+    [Migration("20220314103918_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,15 +61,12 @@ namespace TTTN.TaskManagement.Data.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("CommandId");
 
-                    b.HasIndex("CreatorUserId");
+                    b.HasIndex("CreatedBy");
 
                     b.ToTable("Commands");
                 });
@@ -104,7 +101,6 @@ namespace TTTN.TaskManagement.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ModuleId")
@@ -132,17 +128,16 @@ namespace TTTN.TaskManagement.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"), 1L, 1);
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -169,14 +164,11 @@ namespace TTTN.TaskManagement.Data.Migrations
                     b.Property<int>("SendTo")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("NotificationDetailId");
 
                     b.HasIndex("NotificationId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SendTo");
 
                     b.ToTable("NotificationDetails");
                 });
@@ -196,17 +188,16 @@ namespace TTTN.TaskManagement.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatedBy")
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RoleId");
@@ -248,16 +239,13 @@ namespace TTTN.TaskManagement.Data.Migrations
                     b.Property<int?>("AssignTo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AssignedUserUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("AttachFile")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -282,7 +270,7 @@ namespace TTTN.TaskManagement.Data.Migrations
 
                     b.HasKey("TaskId");
 
-                    b.HasIndex("AssignedUserUserId");
+                    b.HasIndex("AssignTo");
 
                     b.ToTable("Tasks");
                 });
@@ -296,15 +284,16 @@ namespace TTTN.TaskManagement.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<string>("Addresss")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Avartar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -315,6 +304,7 @@ namespace TTTN.TaskManagement.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gender")
@@ -331,9 +321,11 @@ namespace TTTN.TaskManagement.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PlaceOfBirth")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Salt")
@@ -381,9 +373,7 @@ namespace TTTN.TaskManagement.Data.Migrations
                 {
                     b.HasOne("TTTN.TaskManagement.Data.Entities.User", "Creator")
                         .WithMany()
-                        .HasForeignKey("CreatorUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatedBy");
 
                     b.Navigation("Creator");
                 });
@@ -417,7 +407,7 @@ namespace TTTN.TaskManagement.Data.Migrations
 
                     b.HasOne("TTTN.TaskManagement.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SendTo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -449,7 +439,7 @@ namespace TTTN.TaskManagement.Data.Migrations
                 {
                     b.HasOne("TTTN.TaskManagement.Data.Entities.User", "AssignedUser")
                         .WithMany()
-                        .HasForeignKey("AssignedUserUserId");
+                        .HasForeignKey("AssignTo");
 
                     b.Navigation("AssignedUser");
                 });

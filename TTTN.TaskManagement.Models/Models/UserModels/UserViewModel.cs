@@ -19,7 +19,7 @@ namespace TTTN.TaskManagement.Models.Models.UserModels
         [Required(ErrorMessage = "Xác nhận mật khẩu không được để trống !")]
         [MaxLength(32)]
         [Compare(nameof(Password), ErrorMessage = "Xác nhận mật khẩu không trùng khớp !")]
-        public string RePassword { get; set; }
+        public string? RePassword { get; set; }
 
         [EmailAddress]
         [Required(ErrorMessage = "Email không được để trống ! ")]
@@ -33,7 +33,7 @@ namespace TTTN.TaskManagement.Models.Models.UserModels
         public string? PlaceOfBirth { get; set; }
         public string? Addresss { get; set; }
         public string? EmployeeCode { get; set; }
-        public UserStatus Status { get; set; }
+        public UserStatus? Status { get; set; }
         public string? Salt { get; set; }
         public bool IsSuperAdmin { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -44,6 +44,6 @@ namespace TTTN.TaskManagement.Models.Models.UserModels
         [Required(ErrorMessage = "Tên đầy đủ không được để trống !")]
         public string? FullName { get; set; }
 
-        public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<UserRole>? UserRoles { get; set; }
     }
 }

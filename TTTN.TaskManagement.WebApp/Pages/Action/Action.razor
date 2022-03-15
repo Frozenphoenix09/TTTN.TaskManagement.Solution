@@ -1,0 +1,32 @@
+﻿@page "/action"
+@if (actions == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <h3>Action</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ActionName</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in actions)
+            {
+                <tr>
+                    <td>@item.ActionId</td>
+                    <td>@item.ActionName</td>
+                    <td>
+                        <a href="/action-detail/@item.ActionId">Detail</a>
+                        <a href="/action-edit/@item.ActionId">Edit</a>
+                        <a href="/action-delete/@item.ActionId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

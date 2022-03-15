@@ -14,8 +14,8 @@ namespace TTTN.TaskManagement.Services.Mapper.RoleMapper
                 CreatedBy = model.CreatedBy,
                 CreatedDate = model.CreatedDate,
                 Description = model.Description,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedDate = model.UpdatedDate,
+                UpdatedBy = model.UpdatedBy.Value,
+                UpdatedDate = model.UpdatedDate.Value,
                 RoleModuleActions = model.RoleModuleActions,
                 UserRoles = model.UserRoles
             };

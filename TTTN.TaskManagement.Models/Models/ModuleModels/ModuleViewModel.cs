@@ -11,6 +11,6 @@ namespace TTTN.TaskManagement.Models.Models.ModuleModels
         [MaxLength(255)]
         public string ModuleName { get; set; }
 
-        public ICollection<ModuleAction> ModuleActions { get; set; }
+        public ICollection<ModuleAction>? ModuleActions { get; set; }
     }
 }

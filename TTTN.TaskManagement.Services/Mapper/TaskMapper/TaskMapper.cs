@@ -35,7 +35,7 @@ namespace TTTN.TaskManagement.Services.Mapper.TaskMapper
                 Status = model.Status,
                 AttachFile = model.AttachFile,
                 CreatedBy = model.CreatedBy,
-                CreatedDate = model.CreatedDate,
+                CreatedDate = model.CreatedDate.Value,
                 Note = model.Note,
                 Priority = model.Priority,
                 Description = model.Description,

@@ -14,6 +14,6 @@ namespace TTTN.TaskManagement.Models.Models.ActionModels
         [Required(ErrorMessage = "Action name is required !")]
         [MaxLength(255)]
         public string ActionName { get; set; }
-        public ICollection<ModuleAction> ModuleActions { get; set; }
+        public ICollection<ModuleAction>? ModuleActions { get; set; }
     }
 }

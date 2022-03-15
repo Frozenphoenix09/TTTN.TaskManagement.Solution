@@ -10,8 +10,8 @@ namespace TTTN.TaskManagement.Services.Mapper.NotificationMapper
             return new NotificationViewModel
             {
                 NotificationId = entity.NotificationId,
-                CreatedBy = entity.CreatedBy,
-                CreatedDate = entity.CreatedDate,
+                CreatedBy = entity.CreatedBy.Value,
+                CreatedDate = entity.CreatedDate.Value,
                 Description = entity.Description,
                 Title = entity.Title,
                 Status = entity.Status,
@@ -27,7 +27,7 @@ namespace TTTN.TaskManagement.Services.Mapper.NotificationMapper
                 Description = model.Description,
                 CreatedDate = model.CreatedDate,
                 CreatedBy = model.CreatedBy,
-                Status = model.Status,
+                Status = model.Status.Value,
                 Title = model.Title,
                 Notifications = model.Notifications
             };

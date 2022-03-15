@@ -17,11 +17,11 @@ namespace TTTN.TaskManagement.Models.Models.ModuleActionModels
         [Required(ErrorMessage = " Tên không được bỏ trống !")]
         [MaxLength(255)]
         public string Name { get; set; }
-        public string Description { get; set; }
-        public Module Module { get; set; }
-        public string ModuleName { get; set; }
-        public Action Action { get; set; }
-        public string ActionName { get; set; }
-        public ICollection<RoleModuleAction> RoleModuleActions { get; set; }
+        public string? Description { get; set; }
+        public Module? Module { get; set; }
+        public string? ModuleName { get; set; }
+        public Action? Action { get; set; }
+        public string? ActionName { get; set; }
+        public ICollection<RoleModuleAction>? RoleModuleActions { get; set; }
     }
 }

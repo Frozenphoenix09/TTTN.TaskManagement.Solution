@@ -14,7 +14,7 @@ namespace TTTN.TaskManagement.Services.Mapper.CommandMapper
                 CreatedBy = entity.CreatedBy,
                 CreatedDate = entity.CreatedDate,
                 CreatorName = entity.Creator != null ? entity.Creator.FullName : "",
-                Status = entity.Status,
+                Status = entity.Status.Value,
                 Creator = entity.Creator
             };
         }

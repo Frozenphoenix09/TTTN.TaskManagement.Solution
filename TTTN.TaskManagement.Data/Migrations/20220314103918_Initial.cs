@@ -42,10 +42,10 @@ namespace TTTN.TaskManagement.Data.Migrations
                     NotificationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,11 +59,11 @@ namespace TTTN.TaskManagement.Data.Migrations
                     RoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: false)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,20 +79,20 @@ namespace TTTN.TaskManagement.Data.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Addresss = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Addresss = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmployeeCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpDatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Avartar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,7 +108,7 @@ namespace TTTN.TaskManagement.Data.Migrations
                     ModuleId = table.Column<int>(type: "int", nullable: false),
                     ActionId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -136,18 +136,16 @@ namespace TTTN.TaskManagement.Data.Migrations
                     CommandText = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    CreatorUserId = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Commands", x => x.CommandId);
                     table.ForeignKey(
-                        name: "FK_Commands_Users_CreatorUserId",
-                        column: x => x.CreatorUserId,
+                        name: "FK_Commands_Users_CreatedBy",
+                        column: x => x.CreatedBy,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -157,8 +155,7 @@ namespace TTTN.TaskManagement.Data.Migrations
                     NotificationDetailId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NotificationId = table.Column<int>(type: "int", nullable: false),
-                    SendTo = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    SendTo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,8 +167,8 @@ namespace TTTN.TaskManagement.Data.Migrations
                         principalColumn: "NotificationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NotificationDetails_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_NotificationDetails_Users_SendTo",
+                        column: x => x.SendTo,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -187,20 +184,19 @@ namespace TTTN.TaskManagement.Data.Migrations
                     TaskName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AttachFile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TaskDeadline = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedBy = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AssignedUserUserId = table.Column<int>(type: "int", nullable: true)
+                    CreatedBy = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tasks", x => x.TaskId);
                     table.ForeignKey(
-                        name: "FK_Tasks_Users_AssignedUserUserId",
-                        column: x => x.AssignedUserUserId,
+                        name: "FK_Tasks_Users_AssignTo",
+                        column: x => x.AssignTo,
                         principalTable: "Users",
                         principalColumn: "UserId");
                 });
@@ -258,9 +254,9 @@ namespace TTTN.TaskManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Commands_CreatorUserId",
+                name: "IX_Commands_CreatedBy",
                 table: "Commands",
-                column: "CreatorUserId");
+                column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ModuleActions_ActionId",
@@ -278,9 +274,9 @@ namespace TTTN.TaskManagement.Data.Migrations
                 column: "NotificationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NotificationDetails_UserId",
+                name: "IX_NotificationDetails_SendTo",
                 table: "NotificationDetails",
-                column: "UserId");
+                column: "SendTo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleModuleActions_ModuleActionId",
@@ -293,9 +289,9 @@ namespace TTTN.TaskManagement.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_AssignedUserUserId",
+                name: "IX_Tasks_AssignTo",
                 table: "Tasks",
-                column: "AssignedUserUserId");
+                column: "AssignTo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",

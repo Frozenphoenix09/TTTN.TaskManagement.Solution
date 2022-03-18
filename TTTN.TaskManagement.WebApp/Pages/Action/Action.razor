@@ -6,27 +6,41 @@
 else
 {
     <h3>Action</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ActionName</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in actions)
-            {
+    <div class="row">
+        <EditForm Model=@searchModel OnSubmit=@ActionSearch>
+            <div class="row " >
+                <div class="col-3">
+                    <InputText class="form-control" @bind-Value=@searchModel.ActionName></InputText>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.ActionId</td>
-                    <td>@item.ActionName</td>
-                    <td>
-                        <a href="/action-detail/@item.ActionId">Detail</a>
-                        <a href="/action-edit/@item.ActionId">Edit</a>
-                        <a href="/action-delete/@item.ActionId">Delete</a>
-                    </td>
+                    <th>ID</th>
+                    <th>ActionName</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in actions)
+                {
+                    <tr>
+                        <td>@item.ActionId</td>
+                        <td>@item.ActionName</td>
+                        <td>
+                            <a href="/action-detail/@item.ActionId">Detail</a>
+                            <a href="/action-edit/@item.ActionId">Edit</a>
+                            <a href="/action-delete/@item.ActionId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }

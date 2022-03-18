@@ -11,7 +11,7 @@ namespace TTTN.TaskManagement.Services.Services
 {
     public interface IRoleSerive : IEntityService<Role>
     {
-
+        public Task<bool> DeleteRole(int id);
     }
     public class RoleServices : EntityService<Role> , IRoleSerive
     {
@@ -19,6 +19,28 @@ namespace TTTN.TaskManagement.Services.Services
         public RoleServices( IUnitOfWork unitOfWork , IRoleRepository repository) : base(unitOfWork,repository)
         {
             _roleRepository = repository;
+        }
+
+        public async Task<bool> DeleteRole(int id)
+        {
+            try
+            {
+                var roleToDelete = await _roleRepository.GetById(id);
+                if (roleToDelete != null)
+                {
+                    _roleRepository.Delete(roleToDelete);
+                    UnitOfWork.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            } 
         }
     }
 }

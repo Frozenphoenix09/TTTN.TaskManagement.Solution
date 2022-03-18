@@ -11,9 +11,9 @@ namespace TTTN.TaskManagement.Services.Services
         public bool CreateAction(ActionViewModel model);
         public List<ActionViewModel> GetAllAction();
         public ActionViewModel UpdateAction(ActionViewModel model);
-        public bool DeleteAction(int id);
-        public List<ActionViewModel> Search(string? textSearch , int? id );
-        public ActionViewModel GetActionById(int id);
+        public Task<bool> DeleteAction(int id);
+        public List<ActionViewModel> Search(string? textSearch);
+        public Task< ActionViewModel> GetActionById(int id);
     }
     public class ActionServices : EntityService<Action> , IActionService
     {
@@ -37,11 +37,11 @@ namespace TTTN.TaskManagement.Services.Services
             }
         }
 
-        public bool DeleteAction(int id)
+        public async Task<bool> DeleteAction(int id)
         {
             try
             {
-                var actionToDelete =_actionRepostiory.GetById(id);
+                var actionToDelete = await _actionRepostiory.GetById(id);
                 if(actionToDelete != null)
                 {
                     _actionRepostiory.Delete(actionToDelete);
@@ -59,11 +59,11 @@ namespace TTTN.TaskManagement.Services.Services
             }
         }
 
-        public ActionViewModel GetActionById(int id)
+        public async Task<ActionViewModel> GetActionById(int id)
         {
             try
             {
-                var resutlt = _actionRepostiory.GetById(id);
+                var resutlt = await _actionRepostiory.GetById(id);
                 return resutlt.MapToModel();
             }
             catch (Exception)
@@ -81,16 +81,14 @@ namespace TTTN.TaskManagement.Services.Services
             return result.MapToModels();
         }
 
-        public List<ActionViewModel> Search(string? textSearch, int? id)
+        public List<ActionViewModel> Search(string? textSearch)
         {
-            var result = _actionRepostiory.Search(textSearch, id);
+            var result = _actionRepostiory.Search(textSearch);
             if (result != null)
             {
                 return result.MapToModels();
             }
-            else
-                return null;
-            
+            else return null;
         }
 
         public ActionViewModel UpdateAction(ActionViewModel model)

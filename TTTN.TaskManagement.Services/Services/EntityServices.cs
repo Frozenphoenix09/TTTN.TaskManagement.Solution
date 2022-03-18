@@ -12,7 +12,7 @@ namespace TTTN.TaskManagement.Services.Services
         /// </summary>
         /// <param name="id">Primary key of Table current</param>
         /// <returns></returns>
-        T GetById(int id);
+        Task<T> GetById(int id);
 
         T GetById(long id);
 
@@ -20,21 +20,21 @@ namespace TTTN.TaskManagement.Services.Services
         /// Get All list Object
         /// </summary>
         /// <returns></returns>
-        List<T> GetAll();
+        Task<List<T>>GetAll();
 
         /// <summary>
         /// Function use to Update Object
         /// </summary>
         /// <param name="entity">Object is targer Update</param>
         /// <returns></returns>
-        T Update(T entity);
+        Task<T> Update(T entity);
 
         /// <summary>
         /// Function use to Insert Object
         /// </summary>
         /// <param name="entity">Object is targer Update</param>
         /// <returns></returns>
-        T Insert(T entity);
+        Task<T> Insert(T entity);
 
         /// <summary>
         /// Inserts the multiple entity.
@@ -81,16 +81,15 @@ namespace TTTN.TaskManagement.Services.Services
             _repository = repository;
         }
 
-        public T Insert(T entity)
+        public async Task<T> Insert(T entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException("entity");
             }
 
-            _repository.Insert(entity);
+            await _repository.Insert(entity);
             UnitOfWork.SaveChanges();
-
             return entity;
         }
 
@@ -147,9 +146,9 @@ namespace TTTN.TaskManagement.Services.Services
             }
         }
 
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
 
         public T GetById(long id)
@@ -167,17 +166,17 @@ namespace TTTN.TaskManagement.Services.Services
             return _repository.FindAll(expression, includes);
         }
 
-        public List<T> GetAll()
+        public async Task< List<T>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
-        public T Update(T entity)
+        public async Task<T> Update(T entity)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            _repository.Update(entity);
+            await _repository.Update(entity);
             UnitOfWork.SaveChanges();
 
             return entity;

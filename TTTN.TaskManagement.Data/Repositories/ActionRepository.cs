@@ -7,7 +7,7 @@ namespace TTTN.TaskManagement.Data.Repositories
     public interface IActionRepository : IBaseRepository<Action> 
     {
         public List<Action> GetAllAction();
-        public List<Action> Search(string? textSearch, int? id);
+        public List<Action> Search(string? textSearch);
     }
     public class ActionRepository :BaseRepository<Action> , IActionRepository
     {
@@ -20,24 +20,14 @@ namespace TTTN.TaskManagement.Data.Repositories
             return Dbset.ToList();
         }
 
-        public List<Action> Search(string? textSearch, int? id)
+        public List<Action> Search(string? textSearch)
         {
             var result = Dbset.AsQueryable();
             if(textSearch!= null)
             {
                 result=result.Where(x=>x.ActionName.ToLower().Contains(textSearch.ToLower()));
-            }
-            if(id != null)
-            {
-                result = result.Where(x => x.ActionId == id);
-            }
-            if (result.Count() > 0)
-            {
-                return result.ToList();
-            }
-            else
-                return null;
-            
+            }            
+            return result.ToList();           
         }
     }
 }

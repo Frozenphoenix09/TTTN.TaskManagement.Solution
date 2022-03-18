@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TTTN.TaskManagement.Models.Models.ModuleActionModels;
 using TTTN.TaskManagement.Services.Mapper.ModuleActionMapper;
 using TTTN.TaskManagement.Services.Services;
@@ -11,17 +10,19 @@ namespace TTTN.TaskManagement.WebApi.Controllers
     public class ModuleActionController : ControllerBase
     {
         private readonly IModuleActionService _moduleActionService;
+
         public ModuleActionController(IModuleActionService service)
         {
             _moduleActionService = service;
         }
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            var moduleActionServices= _moduleActionService.GetAll();
+            var moduleActionServices = _moduleActionService.GetAll();
             return Ok(moduleActionServices);
         }
-        
+
         [HttpPost]
         public IActionResult Create(ModuleActionViewModel model)
         {
@@ -32,10 +33,10 @@ namespace TTTN.TaskManagement.WebApi.Controllers
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
+
         [HttpPost]
         public IActionResult UpDate(ModuleActionViewModel model)
         {
@@ -46,11 +47,8 @@ namespace TTTN.TaskManagement.WebApi.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
         }
-
     }
 }

@@ -1,0 +1,57 @@
+﻿@page "/user"
+@if (users == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <h3>Action</h3>
+    <div class="row">
+        <EditForm>
+            <div class="col">
+                <input type = "text" placeholder="Nhập nội dung tìm kiếm ...">
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-success"></button>
+            </div>
+        </EditForm>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Code</th>
+                    <th>Status</th>
+                    <th>LastLogIn</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in users)
+                {
+                    <tr>
+                        <td>@item.UserId</td>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                        <td>@item.Gender</td>
+                        <td>@item.Addresss</td>
+                        <td>@item.EmployeeCode</td>
+                        <td>@item.Status</td>
+                         <td>@item.LastLogin</td>
+                        <td>
+                            <a href="/action-detail/@item.UserId">Detail</a>
+                            <a href="/action-edit/@item.UserId">Edit</a>
+                            <a href="/action-delete/@item.UserId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}

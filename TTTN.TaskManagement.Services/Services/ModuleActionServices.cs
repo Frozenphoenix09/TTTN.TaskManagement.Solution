@@ -8,7 +8,7 @@ namespace TTTN.TaskManagement.Services.Services
 {
     public interface IModuleActionService : IEntityService<ModuleAction>
     {
-        public ModuleActionViewModel UpdateModuleAction(ModuleActionViewModel model);
+        public Task< ModuleActionViewModel> UpdateModuleAction(ModuleActionViewModel model);
     }
 
     public class ModuleActionServices : EntityService<ModuleAction>, IModuleActionService
@@ -20,7 +20,7 @@ namespace TTTN.TaskManagement.Services.Services
             _moduleActionRepository = repository;
         }
 
-        public ModuleActionViewModel UpdateModuleAction(ModuleActionViewModel model)
+        public async Task<ModuleActionViewModel> UpdateModuleAction(ModuleActionViewModel model)
         {
             var entity = _moduleActionRepository.GetModuleActionById(model.ModuleActionId);
             if (entity == null)
@@ -29,7 +29,8 @@ namespace TTTN.TaskManagement.Services.Services
             }
             else
             {
-                return _moduleActionRepository.Update(model.MapToEntity()).MapToModel();
+                await _moduleActionRepository.Update(model.MapToEntity());
+                return model;
             }
         }
     }

@@ -45,11 +45,11 @@ namespace TTTN.TaskManagement.WebApi.Controllers
                 return BadRequest(ModelState);
         }
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                if (_moduleServices.DeleteModule(id))
+                if (await _moduleServices.DeleteModule(id))
                     return RedirectToAction(nameof(GetAll));
                 else
                     return BadRequest();

@@ -7,7 +7,7 @@ namespace TTTN.TaskManagement.Services.Mapper.ActionMapper
     {
         public static ActionViewModel MapToModel (this Action entity)
         {
-            return new ActionViewModel
+            return  new ActionViewModel
             {
                 ActionId = entity.ActionId,
                 ActionName = entity.ActionName,

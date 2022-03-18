@@ -21,7 +21,7 @@ namespace TTTN.TaskManagement.WebApi.Controllers
             return Ok(actions);
         }
         [HttpPost]
-        public IActionResult Create(ActionViewModel model)
+        public IActionResult Create([FromBody]ActionViewModel model)
         {
             if(ModelState.IsValid)
             {
@@ -45,11 +45,11 @@ namespace TTTN.TaskManagement.WebApi.Controllers
                 return BadRequest(ModelState);
         }
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                if (_ationServices.DeleteAction(id))
+                if ( await _ationServices.DeleteAction(id))
                     return RedirectToAction(nameof(GetAll));
                 else
                     return BadRequest();
@@ -60,17 +60,11 @@ namespace TTTN.TaskManagement.WebApi.Controllers
                 throw;
             }
         }
-        [HttpPost]
-        public IActionResult Search(string? textSearch , int? id)
+        [HttpGet]
+        public IActionResult Search(string? textSearch)
         {
-            var result = _ationServices.Search(textSearch, id);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-                return Ok("No Data");
-
+            var result = _ationServices.Search(textSearch);           
+            return Ok(result);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TTTN.TaskManagement.Data.Common
         /// </summary>
         /// <param name="id">Primary key of Table current</param>
         /// <returns></returns>
-        T GetById(int id);
+       Task<T> GetById(int id);
 
         /// <summary>
         /// Function use to get Object flow Id
@@ -23,7 +23,7 @@ namespace TTTN.TaskManagement.Data.Common
         /// Get All list Object
         /// </summary>
         /// <returns></returns>
-        List<T> GetAll();
+        Task<List<T>> GetAll();
 
         /// <summary>
         /// Function use in the case Query have condition
@@ -37,7 +37,7 @@ namespace TTTN.TaskManagement.Data.Common
         /// </summary>
         /// <param name="entity">Object is targer Update</param>
         /// <returns></returns>
-        T Update(T entity);
+        Task<T> Update(T entity);
 
         /// <summary>
         /// Function use to Insert Object
@@ -65,7 +65,7 @@ namespace TTTN.TaskManagement.Data.Common
         /// </summary>
         /// <param name="id">Id is identity</param>
         /// <returns></returns>
-        bool Delete(dynamic id);
+       Task<bool> Delete(int id);
 
         /// <summary>
         /// Deletes the mullti.

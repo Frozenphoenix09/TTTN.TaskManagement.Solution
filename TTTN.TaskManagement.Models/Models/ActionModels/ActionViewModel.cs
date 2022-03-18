@@ -16,4 +16,8 @@ namespace TTTN.TaskManagement.Models.Models.ActionModels
         public string ActionName { get; set; }
         public ICollection<ModuleAction>? ModuleActions { get; set; }
     }
+    public class ActionSeacrhModel
+    {
+        public string? ActionName { get; set; }
+    }
 }

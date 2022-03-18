@@ -23,9 +23,9 @@ namespace TTTN.TaskManagement.Data.Common
         /// </summary>
         /// <param name="id">Primary key of Table current</param>
         /// <returns></returns>
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return Dbset.Find(id);
+            return await Dbset.FindAsync(id);
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace TTTN.TaskManagement.Data.Common
         /// Get All list Object
         /// </summary>
         /// <returns></returns>
-        public List<T> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return Dbset.ToList();
+            return await Dbset.ToListAsync();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace TTTN.TaskManagement.Data.Common
         /// </summary>
         /// <param name="entity">Object is targer Update</param>
         /// <returns></returns>
-        public T Update(T entity)
+        public async Task<T> Update(T entity)
         {
             var dbEntityEntry = _dbContext.Entry(entity);
             if (dbEntityEntry.State == EntityState.Detached)
@@ -119,9 +119,9 @@ namespace TTTN.TaskManagement.Data.Common
             return true;
         }
 
-        public virtual bool Delete(dynamic id)
+        public virtual async Task<bool> Delete(int id)
         {
-            var entity = GetById(id);
+            var entity = await GetById(id);
             if (entity == null)
             {
                 return false;

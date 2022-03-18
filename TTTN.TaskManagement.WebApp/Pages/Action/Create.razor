@@ -1,0 +1,14 @@
+﻿@page "/action-create"
+<h3>Create</h3>
+<EditForm Model=@actionViewModel  OnValidSubmit="CreateAction">
+    <DataAnnotationsValidator/>
+    <div class="row">
+        <div class="form-group col-4">
+            <label>Action Name</label>
+            <input type="text" class="form-control" @bind-value=actionViewModel.ActionName placeholder="Enter action name">
+            <ValidationMessage For="()=>actionViewModel.ActionName"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>

@@ -6,8 +6,8 @@ namespace TTTN.TaskManagement.WebApp.Service
     public interface IActionApiServices
     {
         public Task<List<ActionViewModel>> GetAll();
-        public Task<List<ActionViewModel>> Search(int id, string textSearch);
-        public Task<ActionViewModel> Create(ActionViewModel model);
+        public Task<List<ActionViewModel>> Search(ActionSeacrhModel model);
+        public Task<bool> Create(ActionViewModel model);
         public Task<ActionViewModel> Update(ActionViewModel model);
         public void Delete(int id);
     }
@@ -18,9 +18,10 @@ namespace TTTN.TaskManagement.WebApp.Service
         {
             _client = client;
         }
-        public Task<ActionViewModel> Create(ActionViewModel model)
+        public async Task<bool> Create(ActionViewModel model)
         {
-            throw new NotImplementedException();
+            var result = await _client.PostAsJsonAsync("/api/Action/Create", model);
+            return result.IsSuccessStatusCode;
         }
 
         public void Delete(int id)
@@ -34,9 +35,11 @@ namespace TTTN.TaskManagement.WebApp.Service
             return result;
         }
 
-        public Task<List<ActionViewModel>> Search(int id, string textSearch)
+        public async Task<List<ActionViewModel>> Search(ActionSeacrhModel model)
         {
-            throw new NotImplementedException();
+            var url = $"/api/Action/Search?textSearch={model.ActionName}";
+            var result = await _client.GetFromJsonAsync<List<ActionViewModel>>(url);
+            return result;
         }
 
         public Task<ActionViewModel> Update(ActionViewModel model)

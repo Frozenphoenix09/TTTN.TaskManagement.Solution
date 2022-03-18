@@ -11,9 +11,9 @@ namespace TTTN.TaskManagement.Services.Services
         public bool CreateModule(ModuleViewModel model);
         public List<ModuleViewModel> GetAllModule();
         public ModuleViewModel UpdateModule(ModuleViewModel model);
-        public bool DeleteModule(int id);
+        public Task<bool> DeleteModule(int id);
         public List<ModuleViewModel> Search(string? textSearch, int? id);
-        public ModuleViewModel GetModuleById(int id);
+        public Task<ModuleViewModel> GetModuleById(int id);
     }
 
     public class ModuleServices : EntityService<Module>, IModuleService
@@ -39,11 +39,11 @@ namespace TTTN.TaskManagement.Services.Services
             }
         }
 
-        public bool DeleteModule(int id)
+        public async Task<bool> DeleteModule(int id)
         {
             try
             {
-                var actionToDelete = _moduleRepository.GetById(id);
+                var actionToDelete = await _moduleRepository.GetById(id);
                 if (actionToDelete != null)
                 {
                     _moduleRepository.Delete(actionToDelete);
@@ -61,11 +61,11 @@ namespace TTTN.TaskManagement.Services.Services
             }
         }
 
-        public ModuleViewModel GetModuleById(int id)
+        public async Task< ModuleViewModel> GetModuleById(int id)
         {
             try
             {
-                var resutlt = _moduleRepository.GetById(id);
+                var resutlt =  await _moduleRepository.GetById(id);
                 return resutlt.MapToModel();
             }
             catch (Exception)

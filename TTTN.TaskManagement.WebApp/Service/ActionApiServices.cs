@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using TTTN.TaskManagement.Models.Models.ActionModels;
+using TTTN.TaskManagement.Models.Models.ApiResultModels;
 
 namespace TTTN.TaskManagement.WebApp.Service
 {
@@ -7,9 +8,10 @@ namespace TTTN.TaskManagement.WebApp.Service
     {
         public Task<List<ActionViewModel>> GetAll();
         public Task<List<ActionViewModel>> Search(ActionSeacrhModel model);
-        public Task<bool> Create(ActionViewModel model);
-        public Task<ActionViewModel> Update(ActionViewModel model);
-        public void Delete(int id);
+        public Task<ApiResultModel> Create(ActionViewModel model);
+        public Task<bool> Update(ActionViewModel model);
+        public Task<bool> Delete(int id);
+        public Task<ActionViewModel> GetById(int id);
     }
     public class ActionApiServices : IActionApiServices
     {
@@ -18,20 +20,27 @@ namespace TTTN.TaskManagement.WebApp.Service
         {
             _client = client;
         }
-        public async Task<bool> Create(ActionViewModel model)
+        public async Task<ApiResultModel> Create(ActionViewModel model)
         {
-            var result = await _client.PostAsJsonAsync("/api/Action/Create", model);
-            return result.IsSuccessStatusCode;
+            var result = await _client.PostAsJsonAsync("/api/Action/Create", model);            
+            return await result.Content.ReadFromJsonAsync<ApiResultModel>();           
         }
 
-        public void Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var url = $"/api/Action/Delete/{id}";
+            var result = await _client.DeleteAsync(url);
+            return result.IsSuccessStatusCode;
         }
 
         public async Task<List<ActionViewModel>> GetAll()
         {
-            var result = await _client.GetFromJsonAsync<List<ActionViewModel>>("/api/Action/GetAll");
+            return await _client.GetFromJsonAsync <List<ActionViewModel>>("/api/Action/GetAll");
+        }
+
+        public async Task<ActionViewModel> GetById(int id)
+        {
+            var result = await _client.GetFromJsonAsync<ActionViewModel>($"/api/Action/GetById/{id}");
             return result;
         }
 
@@ -42,9 +51,10 @@ namespace TTTN.TaskManagement.WebApp.Service
             return result;
         }
 
-        public Task<ActionViewModel> Update(ActionViewModel model)
+        public async Task<bool> Update(ActionViewModel model)
         {
-            throw new NotImplementedException();
+            var result = await _client.PutAsJsonAsync("/api/Action/Update", model);
+            return (result.IsSuccessStatusCode);
         }
     }
 }

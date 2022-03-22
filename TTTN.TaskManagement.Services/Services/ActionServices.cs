@@ -14,6 +14,7 @@ namespace TTTN.TaskManagement.Services.Services
         public Task<bool> DeleteAction(int id);
         public List<ActionViewModel> Search(string? textSearch);
         public Task< ActionViewModel> GetActionById(int id);
+        public bool IsActionExisted(string name);
     }
     public class ActionServices : EntityService<Action> , IActionService
     {
@@ -79,6 +80,11 @@ namespace TTTN.TaskManagement.Services.Services
         {
             var result = _actionRepostiory.GetAllAction();
             return result.MapToModels();
+        }
+
+        public bool IsActionExisted(string name)
+        {
+            return _actionRepostiory.IsActionExisted(name);
         }
 
         public List<ActionViewModel> Search(string? textSearch)

@@ -8,6 +8,7 @@ namespace TTTN.TaskManagement.Data.Repositories
     {
         public List<Action> GetAllAction();
         public List<Action> Search(string? textSearch);
+        public bool IsActionExisted(string name);
     }
     public class ActionRepository :BaseRepository<Action> , IActionRepository
     {
@@ -18,6 +19,11 @@ namespace TTTN.TaskManagement.Data.Repositories
         public List<Action> GetAllAction()
         {
             return Dbset.ToList();
+        }
+
+        public bool IsActionExisted(string name)
+        {
+            return Dbset.Any(x => x.ActionName == name);
         }
 
         public List<Action> Search(string? textSearch)

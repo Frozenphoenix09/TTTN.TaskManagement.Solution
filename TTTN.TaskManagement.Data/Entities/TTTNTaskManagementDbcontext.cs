@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TTTN.TaskManagement.Data.Entities
 {
-    public class  TTTNTaskManagementDbcontext : DbContext
+    public class  TTTNTaskManagementDbcontext : IdentityDbContext<User, Role, int>
     {
         public TTTNTaskManagementDbcontext(DbContextOptions<TTTNTaskManagementDbcontext> options) : base(options)
         {
@@ -22,6 +23,5 @@ namespace TTTN.TaskManagement.Data.Entities
         public DbSet<RoleModuleAction> RoleModuleActions { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
     }
 }

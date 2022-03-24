@@ -9,7 +9,7 @@ namespace TTTN.TaskManagement.Data.Entities
         public TTTNTaskManagementDbcontext CreateDbContext(string[] args)
         {
             var optionBuilder = new DbContextOptionsBuilder<TTTNTaskManagementDbcontext>();
-            optionBuilder.UseSqlServer("Data Source=DESKTOP-1LN29NP\\DATHUNG;Initial Catalog=TaskMangement;User Id=TaskManagement;Password=12344321;");
+            optionBuilder.UseSqlServer("Data Source=DESKTOP-68VUDPF\\DATHUNG;Initial Catalog=TaskMangement;Trusted_Connection=True;");
             return new TTTNTaskManagementDbcontext(optionBuilder.Options);
         }
     }

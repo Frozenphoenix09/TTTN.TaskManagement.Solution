@@ -8,25 +8,29 @@ namespace TTTN.TaskManagement.WebApp.Pages.Action
 {
     public partial class Create
     {
+        #region InjectService 
         [Inject]
         private IActionApiServices _actionApiServices { get; set; }
         [Inject]
         NavigationManager _navigationManager { get; set; }
         [Inject] 
         IToastService _toastService { get; set; }
-
+        #endregion
+        # region Variables
         private ActionViewModel actionViewModel = new ActionViewModel();
+        #endregion
 
         async void CreateAction (EditContext context)
         {
-            if ( await _actionApiServices.Create(actionViewModel))
+            var respond = await _actionApiServices.Create(actionViewModel);
+            if (respond.StatusCode.Value)
             {
-                _toastService.ShowSuccess("Tạo mới thành công !", "Success");
+                _toastService.ShowSuccess(respond.Data["Message"].ToString(), "Thành công");
                 _navigationManager.NavigateTo("/action");
             }
             else
             {
-                _toastService.ShowSuccess("Tạo mới thất bại ! ", "Failure");
+                _toastService.ShowError(respond.Data["Message"].ToString(),"Lỗi");
             }
         }
     }

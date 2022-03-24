@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TTTN.TaskManagement.Models.Models.ApiResultModels;
 using TTTN.TaskManagement.Models.Models.ModuleModels;
 using TTTN.TaskManagement.Services.Services;
 
@@ -10,67 +10,109 @@ namespace TTTN.TaskManagement.WebApi.Controllers
     public class ModuleController : ControllerBase
     {
         private readonly IModuleService _moduleServices;
+
         public ModuleController(IModuleService services)
         {
             _moduleServices = services;
         }
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            var actions = _moduleServices.GetAllModule();
-            return Ok(actions);
+            var modules = _moduleServices.GetAllModule();
+            return Ok(modules);
         }
+
         [HttpPost]
-        public IActionResult Create(ModuleViewModel model)
+        public IActionResult Create([FromBody] ModuleViewModel model)
         {
+            var apiResult = new ApiResultModel();
             if (ModelState.IsValid)
             {
-                if (_moduleServices.CreateModule(model))
-                    return RedirectToAction(nameof(GetAll));
+                if (_moduleServices.IsModuleExisted(model.ModuleName))
+                {
+                    apiResult.StatusCode = false;
+                    apiResult.Data.Add("Message", $"{model.ModuleName} đã tồn tại trong hệ thống ! ");
+                    return BadRequest(apiResult);
+                }
                 else
-                    return BadRequest();
+                {
+                    if (_moduleServices.CreateModule(model))
+                    {
+                        apiResult.StatusCode = true;
+                        apiResult.Data.Add("Message", $"{model.ModuleName} tạo mới thành công ! ");
+                        return Ok(apiResult);
+                    }
+                    else
+                    {
+                        apiResult.StatusCode = false;
+                        apiResult.Data.Add("Message", "Tạo mới thất bai ! Vui lòng liên hệ quản trị viên ! ");
+                        return BadRequest(apiResult);
+                    }
+                }
             }
             else
                 return BadRequest(ModelState);
         }
-        [HttpPost]
-        public IActionResult Update(ModuleViewModel model)
+
+        [HttpPut]
+        public IActionResult Update([FromBody] ModuleViewModel model)
         {
+            var apiResult = new ApiResultModel();
             if (ModelState.IsValid)
             {
                 _moduleServices.UpdateModule(model);
-                return Ok(model);
+                apiResult.StatusCode = true;
+                apiResult.Data.Add("Message", "Cập nhật thành công");
+                return Ok(apiResult);
             }
             else
-                return BadRequest(ModelState);
+            {
+                apiResult.StatusCode = false;
+                apiResult.Data.Add("Message", ModelState);
+                return BadRequest(apiResult);
+            }
         }
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            var apiResult = new ApiResultModel();
             try
             {
                 if (await _moduleServices.DeleteModule(id))
-                    return RedirectToAction(nameof(GetAll));
+                {
+                    apiResult.StatusCode = true;
+                    apiResult.Data.Add("Message", "Xóa bản ghi thành công !");
+                    return Ok(apiResult);
+                }
                 else
-                    return BadRequest();
+                {
+                    apiResult.StatusCode = false;
+                    apiResult.Data.Add("Message", "Xóa bản ghi thất bại!");
+                    return BadRequest(apiResult);
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        [HttpPost]
-        public IActionResult Search(string? textSearch, int? id)
-        {
-            var result = _moduleServices.Search(textSearch, id);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-                return Ok("No Data");
 
+        [HttpGet]
+        public IActionResult Search([FromQuery] ModuleSearchModel model)
+        {
+            var result = _moduleServices.Search(model);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var result = await _moduleServices.GetModuleById(id);
+            return Ok(result);
         }
     }
 }

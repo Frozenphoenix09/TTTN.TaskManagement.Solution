@@ -9,7 +9,7 @@ namespace TTTN.TaskManagement.Services.Mapper.UserMapper
         {
             return new UserViewModel
             {
-                UserId = entity.UserId,
+                UserId = entity.Id,
                 UserName = entity.UserName,
                 Password = entity.Password,
                 Email = entity.Email,
@@ -27,7 +27,6 @@ namespace TTTN.TaskManagement.Services.Mapper.UserMapper
                 UpDatedDate = entity.UpDatedDate,
                 Salt = entity.Salt,
                 Status = entity.Status,
-                UserRoles = entity.UserRoles,
             };
         }
 
@@ -35,7 +34,7 @@ namespace TTTN.TaskManagement.Services.Mapper.UserMapper
         {
             return new User
             {
-                UserId = model.UserId,
+                Id = model.UserId,
                 UserName = model.UserName,
                 Password = model.Password,
                 Email = model.Email,
@@ -53,7 +52,6 @@ namespace TTTN.TaskManagement.Services.Mapper.UserMapper
                 UpDatedDate = model.UpDatedDate,
                 Salt = model.Salt,
                 Status = model.Status.Value,
-                UserRoles = model.UserRoles,
             };
         }
 

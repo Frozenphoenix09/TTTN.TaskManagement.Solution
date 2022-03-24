@@ -11,7 +11,6 @@ namespace TTTN.TaskManagement.Services.Mapper.TaskMapper
             {
                 TaskId = entity.TaskId,
                 TaskDeadline = entity.TaskDeadline,
-                AssignTo = entity.AssignTo,
                 Status = entity.Status,
                 AttachFile = entity.AttachFile,
                 CreatedBy = entity.CreatedBy,
@@ -31,7 +30,6 @@ namespace TTTN.TaskManagement.Services.Mapper.TaskMapper
             {
                 TaskId = model.TaskId,
                 TaskDeadline = model.TaskDeadline,
-                AssignTo = model.AssignTo,
                 Status = model.Status,
                 AttachFile = model.AttachFile,
                 CreatedBy = model.CreatedBy,

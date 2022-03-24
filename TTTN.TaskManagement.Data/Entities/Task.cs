@@ -8,8 +8,6 @@ namespace TTTN.TaskManagement.Data.Entities
     {
         [Key]
         public int TaskId { get; set; }
-        [ForeignKey("AssignedUser")]
-        public int? AssignTo { get; set; }
         [Required(ErrorMessage =" Tên không được để trống ! ")]
         [MaxLength(255)]
         public string TaskName { get; set; }

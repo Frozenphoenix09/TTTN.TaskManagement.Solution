@@ -1,12 +1,14 @@
 ﻿using TTTN.TaskManagement.Data.Common;
 using TTTN.TaskManagement.Data.Entities;
+using TTTN.TaskManagement.Data.SeedWork;
 
 namespace TTTN.TaskManagement.Data.Repositories
 {
     public interface IModuleRepository : IBaseRepository<Module>
     {
         public List<Module> GetAllModule();
-        public List<Module> Search(string? textSearch, int? id);
+        public PageList<Module> Search(string? textSearch , int currentPage, int pageSize);
+        public bool IsModuleExisted(string name);
     }
     public class ModuleRepository : BaseRepository<Module> , IModuleRepository
     {
@@ -20,23 +22,25 @@ namespace TTTN.TaskManagement.Data.Repositories
             return Dbset.ToList();
         }
 
-        public List<Module> Search(string? textSearch, int? id)
+        public bool IsModuleExisted(string name)
+        {
+            return Dbset.Any(x => x.ModuleName == name);
+        }
+
+        public PageList<Module> Search(string? textSearch, int currentPage, int pageSize)
         {
             var result = Dbset.AsQueryable();
+
             if (textSearch != null)
             {
                 result = result.Where(x => x.ModuleName.ToLower().Contains(textSearch.ToLower()));
             }
-            if (id != null)
-            {
-                result = result.Where(x => x.ModuleId == id);
-            }
-            if (result.Count() > 0)
-            {
-                return result.ToList();
-            }
-            else
-                return null;
+
+            var totalRecord = result.Count();
+
+            var data = result.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PageList<Module>(data, totalRecord, currentPage, pageSize);
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿@page "/module-edit/{ModuleId}"
+@using TTTN.TaskManagement.WebApp.Components;
+
+@if (module == null)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    <h3>Edit @ModuleId</h3>
+    <EditForm Model=@module OnValidSubmit="UpdateModule">
+        <DataAnnotationsValidator />
+        <div class="row">
+            <div class="form-group col-4">
+                <label> Action Name</label>
+                <br />
+                <input type="text" class="form-control" @bind-value=module.ModuleName>
+                <ValidationMessage For="()=>module.ModuleName"></ValidationMessage>
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+}
+
+

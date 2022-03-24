@@ -1,19 +1,22 @@
 ﻿@page "/action"
+@using TTTN.TaskManagement.WebApp.Components;
+
 @if (actions == null)
 {
-    <div class="spinner"></div>
+    <LoadingIndicator></LoadingIndicator>
 }
 else
 {
     <h3>Action</h3>
     <div class="row">
         <EditForm Model=@searchModel OnSubmit=@ActionSearch>
-            <div class="row " >
+            <div class="row ">
                 <div class="col-3">
-                    <InputText class="form-control" @bind-Value=@searchModel.ActionName></InputText>
+                    <InputText class="form-control" @bind-Value=@searchModel.TextSearch></InputText>
                 </div>
                 <div class="col-3">
-                    <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    <button @onclick="()=>AddNew()" class="btn btn-success">Thêm mới</button>
                 </div>
             </div>
         </EditForm>
@@ -34,13 +37,20 @@ else
                         <td>@item.ActionId</td>
                         <td>@item.ActionName</td>
                         <td>
-                            <a href="/action-detail/@item.ActionId">Detail</a>
-                            <a href="/action-edit/@item.ActionId">Edit</a>
-                            <a href="/action-delete/@item.ActionId">Delete</a>
+                            <a class="btn btn-primary" href="/action-detail/@item.ActionId">Detail</a>
+                            <a class="btn btn-warning" href="/action-edit/@item.ActionId">Edit</a>
+                            <button class="btn btn-danger" @onclick="()=>OnActionDelete(item.ActionId,item.ActionName)">Delete</button>
                         </td>
                     </tr>
                 }
             </tbody>
+            <tfoot>
+                <Pagination MetaData = "MetaData" Spread="5" SelectedPage="SelectedPage"></Pagination>
+            </tfoot>
         </table>
     </div>
+    <Confirmation ConfirmationTitle="Detele Action"
+              @ref="DeleteConfirmation"
+              ConfirmationChanged="OnConfirmDeleteAction">
+    </Confirmation>
 }

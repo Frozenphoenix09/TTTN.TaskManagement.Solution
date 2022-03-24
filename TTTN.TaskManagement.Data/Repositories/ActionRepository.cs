@@ -1,13 +1,14 @@
 ﻿using Action = TTTN.TaskManagement.Data.Entities.Action;
 using TTTN.TaskManagement.Data.Common;
 using TTTN.TaskManagement.Data.Entities;
+using TTTN.TaskManagement.Data.SeedWork;
 
 namespace TTTN.TaskManagement.Data.Repositories
 {
     public interface IActionRepository : IBaseRepository<Action> 
     {
-        public List<Action> GetAllAction();
-        public List<Action> Search(string? textSearch);
+        public PageList<Action> GetAllAction(string? textSearch, int pageSize, int currentPage);
+        public PageList<Action> Search(string? textSearch , int pageSize , int currentPage);
         public bool IsActionExisted(string name);
     }
     public class ActionRepository :BaseRepository<Action> , IActionRepository
@@ -16,9 +17,12 @@ namespace TTTN.TaskManagement.Data.Repositories
         {
 
         }
-        public List<Action> GetAllAction()
+        public PageList<Action> GetAllAction(string? textSearch, int pageSize, int currentPage)
         {
-            return Dbset.ToList();
+            var result =  Dbset.ToList();
+            var totalRecord = result.Count();
+            var data = result.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+            return new PageList<Action>(data,totalRecord,currentPage,pageSize);
         }
 
         public bool IsActionExisted(string name)
@@ -26,14 +30,20 @@ namespace TTTN.TaskManagement.Data.Repositories
             return Dbset.Any(x => x.ActionName == name);
         }
 
-        public List<Action> Search(string? textSearch)
+        public PageList<Action> Search(string? textSearch, int pageSize, int currentPage)
         {
             var result = Dbset.AsQueryable();
+
             if(textSearch!= null)
             {
                 result=result.Where(x=>x.ActionName.ToLower().Contains(textSearch.ToLower()));
-            }            
-            return result.ToList();           
+            }
+
+            var totalRecord = result.Count();
+
+            var data = result.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PageList<Action>(data, totalRecord, currentPage, pageSize);           
         }
     }
 }

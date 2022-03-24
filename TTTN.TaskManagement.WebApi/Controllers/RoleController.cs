@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TTTN.TaskManagement.Data.Entities;
+using TTTN.TaskManagement.Models.Models.ApiResultModels;
 using TTTN.TaskManagement.Models.Models.RoleModels;
-using TTTN.TaskManagement.Services.Mapper.RoleMapper;
 using TTTN.TaskManagement.Services.Services;
 
 namespace TTTN.TaskManagement.WebApi.Controllers
@@ -19,64 +18,102 @@ namespace TTTN.TaskManagement.WebApi.Controllers
 
         // GET: api/Role
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetAll()
+        public IActionResult GetAll()
         {
-            return await _roleService.GetAll();
-        }
-
-        // GET: api/Role/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Role>> GetById(int id)
-        {
-            var role = await _roleService.GetById(id);
-
-            if (role == null)
-            {
-                return NotFound();
-            }
-            return Ok(role);
+            var roles = _roleService.GetAllRole();
+            return Ok(roles);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(RoleViewModel model)
+        public IActionResult Create([FromBody] RoleViewModel model)
         {
+            var apiResult = new ApiResultModel();
             if (ModelState.IsValid)
             {
-                await _roleService.Update(model.MapToEntity());
-                return RedirectToAction(nameof(GetAll));
+                if (_roleService.IsActionExisted(model.RoleName))
+                {
+                    apiResult.StatusCode = false;
+                    apiResult.Data.Add("Message", $"{model.RoleName} đã tồn tại trong hệ thống ! ");
+                    return BadRequest(apiResult);
+                }
+                else
+                {
+                    if (_roleService.CreateRole(model))
+                    {
+                        apiResult.StatusCode = true;
+                        apiResult.Data.Add("Message", $"{model.RoleName} tạo mới thành công ! ");
+                        return Ok(apiResult);
+                    }
+                    else
+                    {
+                        apiResult.StatusCode = false;
+                        apiResult.Data.Add("Message", "Tạo mới thất bai ! Vui lòng liên hệ quản trị viên ! ");
+                        return BadRequest(apiResult);
+                    }
+                }
             }
             else
                 return BadRequest(ModelState);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Role>> Create(RoleViewModel role)
+        [HttpPut]
+        public IActionResult Update([FromBody] RoleViewModel model)
         {
+            var apiResult = new ApiResultModel();
             if (ModelState.IsValid)
             {
-                await _roleService.Insert(role.MapToEntity());
-                return RedirectToAction(nameof(GetAll));
+                _roleService.UpdateRole(model);
+                apiResult.StatusCode = true;
+                apiResult.Data.Add("Message", "Cập nhật thành công");
+                return Ok(model);
             }
             else
             {
-                return BadRequest(ModelState);
+                apiResult.StatusCode = false;
+                apiResult.Data.Add("Message", ModelState);
+                return BadRequest(apiResult);
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> DeleteRole(int id)
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            var apiResult = new ApiResultModel();
             try
             {
-                if ( await _roleService.DeleteRole(id))
-                    return RedirectToAction(nameof(GetAll));
+                if (await _roleService.DeleteRole(id))
+                {
+                    apiResult.StatusCode = true;
+                    apiResult.Data.Add("Message", "Xóa bản ghi thành công !");
+                    return Ok(apiResult);
+                }
                 else
-                    return BadRequest();
+                {
+                    apiResult.StatusCode = true;
+                    apiResult.Data.Add("Message", "Xóa bản ghi thất bại!");
+                    return BadRequest(apiResult);
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
+        }
+
+        [HttpGet]
+        public IActionResult Search(string? textSearch)
+        {
+            var result = _roleService.Search(textSearch);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            var result = _roleService.GetRoleById(id);
+            return Ok(result);
         }
     }
 }

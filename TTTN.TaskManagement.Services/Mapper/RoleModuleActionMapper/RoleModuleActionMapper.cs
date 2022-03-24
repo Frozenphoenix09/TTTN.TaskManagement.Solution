@@ -12,7 +12,6 @@ namespace TTTN.TaskManagement.Services.Mapper.RoleModuleActionMapper
                 ModuleActionId = entity.ModuleActionId,
                 ModuleAction = entity.ModuleAction,
                 RoleModuleActionId = entity.RoleModuleActionId,
-                RoleId = entity.RoleId,
                 Role = entity.Role,
                 RoleName = entity.Role != null ? entity.Role.RoleName : "",
                 ModuleActionName = entity.ModuleAction != null ? entity.ModuleAction.Name : ""
@@ -26,7 +25,6 @@ namespace TTTN.TaskManagement.Services.Mapper.RoleModuleActionMapper
                 ModuleActionId = model.ModuleActionId,
                 RoleModuleActionId = model.RoleModuleActionId,
                 ModuleAction = model.ModuleAction,
-                RoleId = model.RoleId,
                 Role = model.Role,
             };
         }

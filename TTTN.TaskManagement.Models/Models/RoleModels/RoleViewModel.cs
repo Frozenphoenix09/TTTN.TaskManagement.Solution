@@ -16,7 +16,12 @@ namespace TTTN.TaskManagement.Models.Models.RoleModels
         public int CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int? UpdatedBy { get; set; }
-        public ICollection<UserRole>? UserRoles { get; set; }
+        public string Creator { get; set; }
         public ICollection<RoleModuleAction>? RoleModuleActions { get; set; }
+    }
+
+    public class RoleSearchModel
+    {
+        public string? TextSearch { get; set; }
     }
 }

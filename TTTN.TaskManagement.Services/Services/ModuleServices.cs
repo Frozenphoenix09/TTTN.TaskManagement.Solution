@@ -1,6 +1,7 @@
 ﻿using TTTN.TaskManagement.Data.Common;
 using TTTN.TaskManagement.Data.Entities;
 using TTTN.TaskManagement.Data.Repositories;
+using TTTN.TaskManagement.Data.SeedWork;
 using TTTN.TaskManagement.Models.Models.ModuleModels;
 using TTTN.TaskManagement.Services.Mapper.ModuleMapper;
 
@@ -12,8 +13,10 @@ namespace TTTN.TaskManagement.Services.Services
         public List<ModuleViewModel> GetAllModule();
         public ModuleViewModel UpdateModule(ModuleViewModel model);
         public Task<bool> DeleteModule(int id);
-        public List<ModuleViewModel> Search(string? textSearch, int? id);
+        public PageList<ModuleViewModel> Search(ModuleSearchModel model);
         public Task<ModuleViewModel> GetModuleById(int id);
+        public bool IsModuleExisted(string name);
+
     }
 
     public class ModuleServices : EntityService<Module>, IModuleService
@@ -83,16 +86,14 @@ namespace TTTN.TaskManagement.Services.Services
             return result.MapToModels();
         }
 
-        public List<ModuleViewModel> Search(string? textSearch, int? id)
+        public PageList<ModuleViewModel> Search(ModuleSearchModel model)
         {
-            var result = _moduleRepository.Search(textSearch, id);
+            var result = _moduleRepository.Search(model.TextSearch, model.CurrentPage, model.PageSize);
             if (result != null)
             {
-                return result.MapToModels();
+                return new PageList<ModuleViewModel>(result.Items.MapToModels(), result.MetaData.TotalRecord, result.MetaData.CurrentPage, result.MetaData.PageSize);
             }
-            else
-                return null;
-
+            else return null;
         }
 
         public ModuleViewModel UpdateModule(ModuleViewModel model)
@@ -109,6 +110,11 @@ namespace TTTN.TaskManagement.Services.Services
 
                 throw;
             }
+        }
+
+        public bool IsModuleExisted(string name)
+        {
+            return _moduleRepository.IsModuleExisted(name);
         }
     }
 }

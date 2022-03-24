@@ -1,6 +1,7 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using TTTN.TaskManagement.Data.SeedWork;
 using TTTN.TaskManagement.Models.Models.ActionModels;
 using TTTN.TaskManagement.WebApp.Components;
 using TTTN.TaskManagement.WebApp.Service;
@@ -25,17 +26,18 @@ namespace TTTN.TaskManagement.WebApp.Pages.Action
         #endregion
         #region Variables
         private List<ActionViewModel> actions;
-        private ActionSeacrhModel searchModel = new ActionSeacrhModel();
+        private ActionSearchModel searchModel = new ActionSearchModel();
+        MetaData MetaData { get; set; } = new MetaData();
         #endregion
 
         protected override async Task OnInitializedAsync()
         {
-            actions = await _actionApiServices.GetAll();
+             await GetAction();
         }
 
         async Task ActionSearch(EditContext context)
-        {            
-            actions = await _actionApiServices.Search(searchModel);
+        {
+            await GetAction();
             StateHasChanged();
         }
 
@@ -52,15 +54,27 @@ namespace TTTN.TaskManagement.WebApp.Pages.Action
         {
             if (deleteConfirm)
             {
-                await _actionApiServices.Delete(DeleteId);
-                _toastService.ShowSuccess("Xóa bản ghi thành công !", "Success");
-                actions = await _actionApiServices.GetAll();
+                var  result = await _actionApiServices.Delete(DeleteId);
+                _toastService.ShowSuccess(result.Data["Message"].ToString(), "Success");
+                await GetAction();
             }
+        }
+        private async Task GetAction()
+        {
+            var pagingRespond = await _actionApiServices.Search(searchModel);
+            actions = pagingRespond.Items;
+            MetaData = pagingRespond.MetaData;
+            
         }
 
         public void AddNew()
         {
             _navigationManager.NavigateTo("/action-create");
+        }
+        private async Task SelectedPage(int page)
+        {
+            searchModel.CurrentPage = page;
+            await GetAction();
         }
     }
 }

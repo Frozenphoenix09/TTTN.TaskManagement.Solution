@@ -1,0 +1,56 @@
+﻿@page "/module"
+@using TTTN.TaskManagement.WebApp.Components;
+
+@if (modules == null)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    <h3>Module</h3>
+    <div class="row">
+        <EditForm Model=@searchModel OnSubmit=@ModuleSearch>
+            <div class="row ">
+                <div class="col-3">
+                    <InputText class="form-control" @bind-Value=@searchModel.TextSearch></InputText>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    <button @onclick="()=>AddNew()" class="btn btn-success">Thêm mới</button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ModuleName</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in modules)
+                {
+                    <tr>
+                        <td>@item.ModuleId</td>
+                        <td>@item.ModuleName</td>
+                        <td>
+                            <a class="btn btn-primary" href="/module-detail/@item.ModuleId">Detail</a>
+                            <a class="btn btn-warning" href="/module-edit/@item.ModuleId">Edit</a>
+                            <button class="btn btn-danger" @onclick="()=>OnModuleDelete(item.ModuleId,item.ModuleName)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <Pagination MetaData="MetaData" Spread="3" SelectedPage="SelectedPage"></Pagination>
+            </tfoot>
+        </table>
+    </div>
+    <Confirmation ConfirmationTitle="Detele Module"
+              @ref="DeleteConfirmation"
+              ConfirmationChanged="OnConfirmDeleteModule">
+    </Confirmation>
+}

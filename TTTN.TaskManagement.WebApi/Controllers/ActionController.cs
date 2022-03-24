@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TTTN.TaskManagement.Models.Models.ActionModels;
 using TTTN.TaskManagement.Models.Models.ApiResultModels;
 using TTTN.TaskManagement.Services.Services;
@@ -18,9 +17,9 @@ namespace TTTN.TaskManagement.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(ActionSearchModel model)
         {
-            var actions = _ationServices.GetAllAction();
+            var actions = _ationServices.GetAllAction(model);
             return Ok(actions);
         }
 
@@ -59,37 +58,52 @@ namespace TTTN.TaskManagement.WebApi.Controllers
         [HttpPut]
         public IActionResult Update([FromBody] ActionViewModel model)
         {
+            var apiResult = new ApiResultModel();
             if (ModelState.IsValid)
             {
                 _ationServices.UpdateAction(model);
+                apiResult.StatusCode = true;
+                apiResult.Data.Add("Message", "Cập nhật thành công");
                 return Ok(model);
             }
             else
-                return BadRequest(ModelState);
+            {
+                apiResult.StatusCode = false;
+                apiResult.Data.Add("Message", ModelState);
+                return BadRequest(apiResult);
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            var apiResult = new ApiResultModel();
             try
             {
                 if (await _ationServices.DeleteAction(id))
-                    return RedirectToAction(nameof(GetAll));
+                {
+                    apiResult.StatusCode = true;
+                    apiResult.Data.Add("Message", "Xóa bản ghi thành công !");
+                    return Ok(apiResult);
+                }
                 else
-                    return BadRequest();
+                {
+                    apiResult.StatusCode = true;
+                    apiResult.Data.Add("Message", "Xóa bản ghi thất bại!");
+                    return BadRequest(apiResult);
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
         [HttpGet]
-        public IActionResult Search(string? textSearch)
+        public IActionResult Search([FromQuery] ActionSearchModel model)
         {
-            var result = _ationServices.Search(textSearch);
+            var result = _ationServices.Search(model);
             return Ok(result);
         }
 

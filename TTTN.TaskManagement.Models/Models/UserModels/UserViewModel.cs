@@ -43,7 +43,5 @@ namespace TTTN.TaskManagement.Models.Models.UserModels
 
         [Required(ErrorMessage = "Tên đầy đủ không được để trống !")]
         public string? FullName { get; set; }
-
-        public ICollection<UserRole>? UserRoles { get; set; }
     }
 }

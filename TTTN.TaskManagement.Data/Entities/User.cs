@@ -1,15 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using TTTN.TaskManagement.Data.Enums;
 
 namespace TTTN.TaskManagement.Data.Entities
 {
-    public  class User
+    public  class User : IdentityUser<int>
     {
-        public int UserId { get; set; }
-        public string UserName { get; set; }
         public string Password { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
         public int Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PlaceOfBirth { get; set; }
@@ -23,6 +20,5 @@ namespace TTTN.TaskManagement.Data.Entities
         public DateTime? LastLogin { get; set; }
         public string? Avartar { get; set; }
         public string FullName { get; set; }
-        public ICollection<UserRole>? UserRoles { get; set; }
     }
 }

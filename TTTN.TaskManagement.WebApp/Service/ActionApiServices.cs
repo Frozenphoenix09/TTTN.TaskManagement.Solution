@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using System.Net.Http.Json;
+using TTTN.TaskManagement.Data.SeedWork;
 using TTTN.TaskManagement.Models.Models.ActionModels;
 using TTTN.TaskManagement.Models.Models.ApiResultModels;
 
@@ -6,11 +8,11 @@ namespace TTTN.TaskManagement.WebApp.Service
 {
     public interface IActionApiServices
     {
-        public Task<List<ActionViewModel>> GetAll();
-        public Task<List<ActionViewModel>> Search(ActionSeacrhModel model);
+        public Task<PageList<ActionViewModel>> GetAll();
+        public Task<PageList<ActionViewModel>> Search(ActionSearchModel model);
         public Task<ApiResultModel> Create(ActionViewModel model);
-        public Task<bool> Update(ActionViewModel model);
-        public Task<bool> Delete(int id);
+        public Task<ApiResultModel> Update(ActionViewModel model);
+        public Task<ApiResultModel> Delete(int id);
         public Task<ActionViewModel> GetById(int id);
     }
     public class ActionApiServices : IActionApiServices
@@ -26,16 +28,16 @@ namespace TTTN.TaskManagement.WebApp.Service
             return await result.Content.ReadFromJsonAsync<ApiResultModel>();           
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<ApiResultModel> Delete(int id)
         {
             var url = $"/api/Action/Delete/{id}";
             var result = await _client.DeleteAsync(url);
-            return result.IsSuccessStatusCode;
+            return await result.Content.ReadFromJsonAsync<ApiResultModel>();
         }
 
-        public async Task<List<ActionViewModel>> GetAll()
+        public async Task<PageList<ActionViewModel>> GetAll()
         {
-            return await _client.GetFromJsonAsync <List<ActionViewModel>>("/api/Action/GetAll");
+            return await _client.GetFromJsonAsync <PageList<ActionViewModel>>("/api/Action/GetAll");
         }
 
         public async Task<ActionViewModel> GetById(int id)
@@ -44,17 +46,29 @@ namespace TTTN.TaskManagement.WebApp.Service
             return result;
         }
 
-        public async Task<List<ActionViewModel>> Search(ActionSeacrhModel model)
+        public async Task<PageList<ActionViewModel>> Search(ActionSearchModel model)
         {
-            var url = $"/api/Action/Search?textSearch={model.ActionName}";
-            var result = await _client.GetFromJsonAsync<List<ActionViewModel>>(url);
+            var queryStringParams = new Dictionary<string, string>
+            {
+                ["textSearch"] = "",
+                ["pageSize"] = model.PageSize.ToString(),
+                ["currentPage"] = model.CurrentPage.ToString()                             
+            };
+
+            if(model.TextSearch != null)
+            {
+                queryStringParams["textSearch"] = model.TextSearch;
+            }
+
+            string url = QueryHelpers.AddQueryString("/api/Action/Search", queryStringParams);
+            var result = await _client.GetFromJsonAsync<PageList<ActionViewModel>>(url);
             return result;
         }
 
-        public async Task<bool> Update(ActionViewModel model)
+        public async Task<ApiResultModel> Update(ActionViewModel model)
         {
             var result = await _client.PutAsJsonAsync("/api/Action/Update", model);
-            return (result.IsSuccessStatusCode);
+            return await result.Content.ReadFromJsonAsync<ApiResultModel>();
         }
     }
 }

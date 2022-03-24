@@ -12,8 +12,6 @@ namespace TTTN.TaskManagement.Data.Entities
         [MaxLength(int.MaxValue)]
         public string? CommandText { get; set; }
         public DateTime? CreatedDate { get; set; }
-        [ForeignKey("Creator")]
-        public int? CreatedBy { get; set; }
         public CommandStatus? Status { get; set; }
         public virtual User? Creator { get; set; }
     }

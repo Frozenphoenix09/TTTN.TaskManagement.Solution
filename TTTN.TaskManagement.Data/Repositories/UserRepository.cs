@@ -43,7 +43,7 @@ namespace TTTN.TaskManagement.Data.Repositories
             }
             if (id != null)
             {
-                result = result.Where(x => x.UserId == id);
+                result = result.Where(x => x.Id == id);
             }
             if (status != null)
             {

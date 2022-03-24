@@ -8,17 +8,21 @@ namespace TTTN.TaskManagement.WebApp.Pages.Action
 {
     public partial class Edit
     {
-        [Parameter]
-        public string ActionId { get; set; }
-
-        private ActionViewModel action ;
-
+        #region InjectServive
         [Inject]
         private IActionApiServices _actionApiServices { get; set; }
         [Inject]
         NavigationManager _navigationManager { get; set; }
         [Inject]
         IToastService _toastService { get; set; }
+        #endregion
+        #region params
+        [Parameter]
+        public string ActionId { get; set; }
+        #endregion
+        #region Variables
+        private ActionViewModel action ;
+        #endregion
 
         protected override async Task OnInitializedAsync()
         {
@@ -26,14 +30,15 @@ namespace TTTN.TaskManagement.WebApp.Pages.Action
         }
         async void UpdateAction(EditContext context)
         {
-            if (await _actionApiServices.Update(action))
+            var respond = await _actionApiServices.Update(action);
+            if (respond.StatusCode.Value)
             {
-                _toastService.ShowSuccess("Cập nhật thành công !", "Success");
+                _toastService.ShowSuccess(respond.Data["Message"].ToString(), "Success");
                 _navigationManager.NavigateTo("/action");
             }
             else
             {
-                _toastService.ShowSuccess("Cập nhật thất bại ! ", "Failure");
+                _toastService.ShowSuccess(respond.Data["Message"].ToString(), "Failure");
             }
         }
     }

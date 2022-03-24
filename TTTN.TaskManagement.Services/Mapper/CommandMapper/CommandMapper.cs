@@ -11,7 +11,6 @@ namespace TTTN.TaskManagement.Services.Mapper.CommandMapper
             {
                 CommandId = entity.CommandId,
                 CommandText = entity.CommandText,
-                CreatedBy = entity.CreatedBy,
                 CreatedDate = entity.CreatedDate,
                 CreatorName = entity.Creator != null ? entity.Creator.FullName : "",
                 Status = entity.Status.Value,
@@ -25,7 +24,6 @@ namespace TTTN.TaskManagement.Services.Mapper.CommandMapper
             {
                 CommandId = model.CommandId,
                 CommandText = model.CommandText,
-                CreatedBy = model.CreatedBy,
                 CreatedDate = model.CreatedDate,
                 Creator = model.Creator,
                 Status = model.Status

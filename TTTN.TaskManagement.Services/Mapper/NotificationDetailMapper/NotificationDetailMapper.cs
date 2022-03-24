@@ -15,7 +15,6 @@ namespace TTTN.TaskManagement.Services.Mapper.NotificationDetailMapper
                 NotificationTitle = entity.Notification != null ? entity.Notification.Title : "",
                 UserName = entity.User != null ? entity.User.FullName : "",
                 User = entity.User,
-                SendTo = entity.SendTo
             };
         }
         public static NotificationDetail MapToEntity (this NotificationDetailViewModel model)
@@ -25,7 +24,6 @@ namespace TTTN.TaskManagement.Services.Mapper.NotificationDetailMapper
                 NotificationDetailId = model.NotificationId,
                 NotificationId = model.NotificationId,
                 Notification = model.Notification,
-                SendTo = model.SendTo,
                 User = model.User,
             };
         }

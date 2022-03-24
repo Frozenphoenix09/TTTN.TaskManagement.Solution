@@ -8,14 +8,17 @@ namespace TTTN.TaskManagement.WebApp.Pages.Action
 {
     public partial class Create
     {
+        #region InjectService 
         [Inject]
         private IActionApiServices _actionApiServices { get; set; }
         [Inject]
         NavigationManager _navigationManager { get; set; }
         [Inject] 
         IToastService _toastService { get; set; }
-
+        #endregion
+        # region Variables
         private ActionViewModel actionViewModel = new ActionViewModel();
+        #endregion
 
         async void CreateAction (EditContext context)
         {

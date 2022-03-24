@@ -9,7 +9,7 @@ namespace TTTN.TaskManagement.Services.Mapper.RoleMapper
         {
             return new Role
             {
-                RoleId = model.RoleId,
+                Id = model.RoleId,
                 RoleName = model.RoleName,
                 CreatedBy = model.CreatedBy,
                 CreatedDate = model.CreatedDate,
@@ -17,7 +17,6 @@ namespace TTTN.TaskManagement.Services.Mapper.RoleMapper
                 UpdatedBy = model.UpdatedBy.Value,
                 UpdatedDate = model.UpdatedDate.Value,
                 RoleModuleActions = model.RoleModuleActions,
-                UserRoles = model.UserRoles
             };
         }
 
@@ -25,15 +24,14 @@ namespace TTTN.TaskManagement.Services.Mapper.RoleMapper
         {
             return new RoleViewModel
             {
-                RoleId = entity.RoleId,
+                RoleId = entity.Id,
                 Description = entity.Description,
                 RoleModuleActions = entity.RoleModuleActions,
                 CreatedDate = entity.CreatedDate,
                 CreatedBy = entity.CreatedBy,
                 RoleName = entity.RoleName,
                 UpdatedDate = entity.UpdatedDate,
-                UpdatedBy = entity.UpdatedBy,
-                UserRoles = entity.UserRoles
+                UpdatedBy = entity.UpdatedBy,            
             };
         }
 

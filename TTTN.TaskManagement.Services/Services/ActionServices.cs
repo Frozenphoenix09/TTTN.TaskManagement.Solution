@@ -1,5 +1,6 @@
 ﻿using TTTN.TaskManagement.Data.Common;
 using TTTN.TaskManagement.Data.Repositories;
+using TTTN.TaskManagement.Data.SeedWork;
 using TTTN.TaskManagement.Models.Models.ActionModels;
 using TTTN.TaskManagement.Services.Mapper.ActionMapper;
 using Action = TTTN.TaskManagement.Data.Entities.Action;
@@ -9,10 +10,10 @@ namespace TTTN.TaskManagement.Services.Services
     public interface IActionService : IEntityService<Action>
     {
         public bool CreateAction(ActionViewModel model);
-        public List<ActionViewModel> GetAllAction();
+        public PageList<ActionViewModel> GetAllAction(ActionSearchModel model);
         public ActionViewModel UpdateAction(ActionViewModel model);
         public Task<bool> DeleteAction(int id);
-        public List<ActionViewModel> Search(string? textSearch);
+        public PageList<ActionViewModel> Search(ActionSearchModel model);
         public Task< ActionViewModel> GetActionById(int id);
         public bool IsActionExisted(string name);
     }
@@ -76,10 +77,10 @@ namespace TTTN.TaskManagement.Services.Services
             
         }
 
-        public List<ActionViewModel> GetAllAction()
+        public PageList<ActionViewModel> GetAllAction(ActionSearchModel model)
         {
-            var result = _actionRepostiory.GetAllAction();
-            return result.MapToModels();
+            var result = _actionRepostiory.GetAllAction(model.TextSearch, model.PageSize,model.CurrentPage);
+            return new PageList<ActionViewModel>(result.Items.MapToModels(), result.MetaData.TotalRecord, result.MetaData.CurrentPage, result.MetaData.PageSize);
         }
 
         public bool IsActionExisted(string name)
@@ -87,12 +88,12 @@ namespace TTTN.TaskManagement.Services.Services
             return _actionRepostiory.IsActionExisted(name);
         }
 
-        public List<ActionViewModel> Search(string? textSearch)
+        public PageList<ActionViewModel> Search(ActionSearchModel model)
         {
-            var result = _actionRepostiory.Search(textSearch);
+            var result = _actionRepostiory.Search(model.TextSearch, model.PageSize,model.CurrentPage);
             if (result != null)
             {
-                return result.MapToModels();
+                return new PageList<ActionViewModel>(result.Items.MapToModels(), result.MetaData.TotalRecord, result.MetaData.CurrentPage, result.MetaData.PageSize);
             }
             else return null;
         }
